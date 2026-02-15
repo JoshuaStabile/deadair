@@ -1,9 +1,5 @@
-JELLYFIN_DB = "/opt/jellyfin/config/config/data/jellyfin.db"
+import os
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
-OLLAMA_MODEL = "tinyllama"
-
-PIPER_MODEL_PATH = "/models/en_US-lessac-medium.onnx"
-TTS_OUTPUT_FILE = "/tmp/dj.wav"
-
-ICECAST_URL = "icecast://source:Docker@localhost:8000/music"
+JELLYFIN_DB_PATH = os.getenv("JELLYFIN_DB_PATH")
+OLLAMA_URL = os.getenv("OLLAMA_URL")
+ICECAST_URL = os.getenv("ICECAST_URL")
