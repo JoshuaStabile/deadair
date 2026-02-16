@@ -1,0 +1,42 @@
+services:
+
+  deadair:
+    image: python:3.11-slim
+    container_name: deadair
+    restart: unless-stopped
+    depends_on:
+      - ollama
+      - icecast
+    volumes:
+      - ./app:/app
+      - /var/lib/jellyfin/data:/jellyfin-data:ro
+    environment:
+      - JELLYFIN_DB_PATH=/jellyfin-data/library.db
+      - OLLAMA_URL=http://ollama:11434/api/generate
+      - ICECAST_URL=icecast://source:Docker@icecast:8000/music
+    networks:
+      - radio-net
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - radio-net
+
+  icecast:
+    image: deepcomp/icecast2
+    container_name: icecast
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    networks:
+      - radio-net
+
+networks:
+  radio-net:
+
+volumes:
+  ollama-data:
