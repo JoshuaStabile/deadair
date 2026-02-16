@@ -22,9 +22,9 @@ WORKDIR /app
 
 # Copy dependency file first (better caching)
 COPY dependencies.txt .
-RUN pip install --no-cache-dir -r ./app/dependencies.txt
+RUN pip install --no-cache-dir -r dependencies.txt
 
 # Copy your full app
-COPY ./app. .
+COPY . .
 
 CMD ["python", "main.py"]
