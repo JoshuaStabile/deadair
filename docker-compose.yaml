@@ -8,10 +8,11 @@ services:
       - ollama
       - icecast
     volumes:
-      - ./app:/app
-      - /var/lib/jellyfin/data:/jellyfin-data:ro
+      - ./logs:/app/logs
+      - ./:/app
+      - /opt/jellyfin/config/data:/jellyfin:ro
     environment:
-      - JELLYFIN_DB_PATH=/jellyfin-data/library.db
+      - JELLYFIN_DB_PATH=/jellyfin/jellyfin.db
       - OLLAMA_URL=http://ollama:11434/api/generate
       - ICECAST_URL=icecast://source:Docker@icecast:8000/music
     networks:

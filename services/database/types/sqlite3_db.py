@@ -1,7 +1,10 @@
 import sqlite3
 from typing import Any, Iterable
 from ..db import Database
+from logger.logger import Logger
 
+
+logger = Logger().get()
 
 class SQLiteDatabase(Database):
 
@@ -21,13 +24,3 @@ class SQLiteDatabase(Database):
         cursor = self.connection.cursor()
         cursor.execute(query, params)
         self.connection.commit()
-
-    def fetch_all(self, query: str, params: Iterable[Any] = ()) -> list:
-        cursor = self.connection.cursor()
-        cursor.execute(query, params)
-        return cursor.fetchall()
-
-    def fetch_one(self, query: str, params: Iterable[Any] = ()) -> Any:
-        cursor = self.connection.cursor()
-        cursor.execute(query, params)
-        return cursor.fetchone()

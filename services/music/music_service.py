@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class SongService(ABC):
+class MusicService(ABC):
 
     @abstractmethod
     def get_random_track(self):
