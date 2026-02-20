@@ -1,7 +1,7 @@
 services:
 
   deadair:
-    image: python:3.11-slim
+    build: .
     container_name: deadair
     restart: unless-stopped
     depends_on:
