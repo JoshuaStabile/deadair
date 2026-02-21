@@ -19,7 +19,7 @@ RUN curl -L https://github.com/rhasspy/piper/releases/latest/download/piper_linu
     && rm /tmp/piper.tar.gz
 
 # Copy your full app
-RUN git clone https://github.com/JoshuaStabile/deadair.git /app/code
+RUN git clone https://github.com/JoshuaStabile/deadair.git /app
 
 RUN pip install --no-cache-dir -r /app/dependencies.txt
 
