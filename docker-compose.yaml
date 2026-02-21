@@ -9,7 +9,8 @@ services:
       - ollama
       - icecast
     volumes:
-      - ./:/app
+      - /opt/deadair/logs:/app/logs
+      - /opt/deadair/output:/app/output
       - /opt/jellyfin/config/data:/jellyfin:ro
     environment:
       - PYTHONPATH=/app/code
