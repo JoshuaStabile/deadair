@@ -7,6 +7,7 @@ from services.radio.radio_service import RadioService
 from logger.logger import Logger
 
 from config import (
+    JELLYFIN_DB_PATH,
     PIPER_MODEL_PATH,
     PIPER_OUTPUT_FILE
 )
@@ -25,7 +26,7 @@ def main():
         "--out", PIPER_OUTPUT_FILE
     ])
     
-    db = SQLiteDatabase()
+    db = SQLiteDatabase(JELLYFIN_DB_PATH)
     music = JellyfinService(db)
     llm = LLMService()
     tts = TTSService()
