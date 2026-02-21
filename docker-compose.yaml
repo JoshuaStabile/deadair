@@ -2,6 +2,7 @@ services:
 
   deadair:
     build: .
+    image: deadair:latest
     container_name: deadair
     restart: unless-stopped
     depends_on:

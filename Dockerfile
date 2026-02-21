@@ -25,4 +25,4 @@ RUN pip install --no-cache-dir -r /app/dependencies.txt
 
 WORKDIR /app/code
 
-CMD python -m code.main && tail -f /dev/null
+CMD python -m main && tail -f /dev/null
