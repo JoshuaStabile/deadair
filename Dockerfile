@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
-WORKDIR /app
+WORKDIR /app/code
 
 # System deps
 RUN apt-get update && \
@@ -24,4 +24,5 @@ RUN git clone https://github.com/JoshuaStabile/deadair.git /app
 
 RUN pip install --no-cache-dir -r /app/dependencies.txt
 
+CMD ["git", "pull"]
 CMD ["python", "-m", "code.main"]
