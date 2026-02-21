@@ -24,5 +24,4 @@ RUN git clone https://github.com/JoshuaStabile/deadair.git /app
 
 RUN pip install --no-cache-dir -r /app/dependencies.txt
 
-CMD ["git", "pull"]
-CMD ["python", "-m", "code.main"]
+CMD python -m code.main && tail -f /dev/null
