@@ -9,8 +9,6 @@ services:
       - ollama
       - icecast
     volumes:
-      - ./logs:/app/logs
-      - ./output:/app/output
       - ./:/app
       - /opt/jellyfin/config/data:/jellyfin:ro
     environment:
