@@ -1,5 +1,5 @@
 import subprocess
-from config import PIPER_MODEL_PATH, TTS_OUTPUT_FILE
+from config import PIPER_MODEL_PATH, PIPER_OUTPUT_FILE
 
 class TTSService:
 
@@ -8,7 +8,7 @@ class TTSService:
             [
                 "piper",
                 "--model", PIPER_MODEL_PATH,
-                "--output_file", TTS_OUTPUT_FILE
+                "--output_file", PIPER_OUTPUT_FILE
             ],
             stdin=subprocess.PIPE,
             text=True
@@ -16,4 +16,4 @@ class TTSService:
 
         process.communicate(text)
 
-        return TTS_OUTPUT_FILE
+        return PIPER_OUTPUT_FILE

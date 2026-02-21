@@ -2,6 +2,6 @@
     "name": "Run Deadair",
     "type": "python",
     "request": "launch",
-    "program": "${workspaceFolder}/main.py",
+    "program": "${workspaceFolder}/code/main.py",
     "cwd": "${workspaceFolder}"
 }

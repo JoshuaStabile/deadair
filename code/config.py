@@ -5,6 +5,9 @@ OLLAMA_URL = os.getenv("OLLAMA_URL")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "tinyllama")
 ICECAST_URL = os.getenv("ICECAST_URL")
 
+PIPER_MODEL_PATH = "./resources/piper/en_US-arctic-medium.onmx"
+PIPER_OUTPUT_FILE = "/log/output.wav"
+
 LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG")
 LOG_DIR = os.getenv("LOG_DIR", "logs")
 LOG_FILE = os.getenv("LOG_FILE", "deadair.log")
