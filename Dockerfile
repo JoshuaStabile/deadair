@@ -1,7 +1,6 @@
 FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
-WORKDIR /app/code
 
 # System deps
 RUN apt-get update && \
@@ -20,8 +19,10 @@ RUN curl -L https://github.com/rhasspy/piper/releases/latest/download/piper_linu
     && rm /tmp/piper.tar.gz
 
 # Copy your full app
-RUN git clone https://github.com/JoshuaStabile/deadair.git /app
+RUN git clone https://github.com/JoshuaStabile/deadair.git /app/code
 
 RUN pip install --no-cache-dir -r /app/dependencies.txt
+
+WORKDIR /app/code
 
 CMD python -m code.main && tail -f /dev/null
