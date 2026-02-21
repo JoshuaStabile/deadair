@@ -23,6 +23,8 @@ RUN git clone https://github.com/JoshuaStabile/deadair.git /app
 
 RUN pip install --no-cache-dir -r /app/dependencies.txt
 
+# Set working directory
 WORKDIR /app/code
 
-CMD python -m main && tail -f /dev/null
+# Run main.py and keep container alive
+CMD ["sh", "-c", "python main.py && tail -f /dev/null"]
