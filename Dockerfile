@@ -14,8 +14,9 @@ RUN apt-get update && \
 
 # Install Piper (ARM64)
 RUN curl -L https://github.com/rhasspy/piper/releases/latest/download/piper_linux_aarch64.tar.gz -o /tmp/piper.tar.gz \
-    && tar -xzf /tmp/piper.tar.gz -C /usr/local/bin \
+    && tar -xzf /tmp/piper.tar.gz -C /usr/local/bin --strip-components=1 \
     && chmod +x /usr/local/bin/piper \
+    && chmod +x /usr/local/bin/piper_phonemize \
     && rm /tmp/piper.tar.gz
 
 # Copy your full app
@@ -27,4 +28,4 @@ RUN pip install --no-cache-dir -r /app/dependencies.txt
 WORKDIR /app/code
 
 # Run main.py and keep container alive
-CMD ["sh", "-c", "python main.py && tail -f /dev/null"]
+CMD ["python", "main.py"]
