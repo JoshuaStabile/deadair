@@ -12,6 +12,7 @@ services:
       - ./:/app
       - /opt/jellyfin/config/data:/jellyfin:ro
     environment:
+      - PYTHONPATH=/app
       - JELLYFIN_DB_PATH=/jellyfin/jellyfin.db
       - OLLAMA_URL=http://ollama:11434/api/generate
       - OLLAMA_MODEL=tinyllama

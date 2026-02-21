@@ -1,10 +1,10 @@
-from .code.services.database.types.sqlite3_db import SQLiteDatabase
-from .code.services.music.types.jellyfin_service import JellyfinService
-from .code.services.llm.llm_service import LLMService
-from .code.services.tts.tts_service import TTSService
-from .code.services.stream.stream_service import StreamService
-from .code.services.radio.radio_service import RadioService
-from .code.logger.logger import Logger
+from code.services.database.types.sqlite3_db import SQLiteDatabase
+from code.services.music.types.jellyfin_service import JellyfinService
+from code.services.llm.llm_service import LLMService
+from code.services.tts.tts_service import TTSService
+from code.services.stream.stream_service import StreamService
+from code.services.radio.radio_service import RadioService
+from code.logger.logger import Logger
 
 import subprocess
 
