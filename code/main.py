@@ -26,6 +26,9 @@ def main():
         "--out", PIPER_OUTPUT_FILE
     ])
     
+    if not JELLYFIN_DB_PATH:
+        raise RuntimeError("JELLYFIN_DB_PATH not set")
+    
     db = SQLiteDatabase(JELLYFIN_DB_PATH)
     music = JellyfinService(db)
     llm = LLMService()
