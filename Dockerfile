@@ -25,4 +25,4 @@ RUN pip install --no-cache-dir -r /app/dependencies.txt
 WORKDIR /app/code
 
 # Run main.py and keep container alive
-CMD ["python", "main.py"]
+CMD ["python", "-m", "main.py"]
