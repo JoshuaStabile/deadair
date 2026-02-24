@@ -8,28 +8,19 @@ from logger.logger import Logger
 
 from config import (
     JELLYFIN_DB_PATH,
-    PIPER_MODEL_PATH,
-    PIPER_OUTPUT_FILE
 )
-
-import subprocess
 
 logger = Logger().get()
 
 def main():
     logger.info("Application starting")
     
-    subprocess.run([
-        "piper",
-        "--model", PIPER_MODEL_PATH,
-        "--text", "Hello world",
-        "--output_file", PIPER_OUTPUT_FILE
-    ])
-    
     if not JELLYFIN_DB_PATH:
         raise RuntimeError("JELLYFIN_DB_PATH not set")
     
     db = SQLiteDatabase(JELLYFIN_DB_PATH)
+    db.connect()
+    
     music = JellyfinService(db)
     llm = LLMService()
     tts = TTSService()
