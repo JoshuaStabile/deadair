@@ -12,12 +12,8 @@ services:
       - /opt/deadair/:/app
       - /opt/jellyfin/config/data:/jellyfin:ro
       - /mnt/media/music:/media/music
-    environment:
-      - PYTHONPATH=/app/code
-      - JELLYFIN_DB_PATH=/jellyfin/jellyfin.db
-      - OLLAMA_URL=http://ollama:11434
-      - OLLAMA_MODEL=tinyllama
-      - ICECAST_URL=icecast://source:${ICECAST_SOURCE_PASSWORD}@icecast:8000/radio
+    env_file:
+      - /opt/deadair/.env
     networks:
       - radio-net
 
@@ -42,8 +38,6 @@ services:
       - "8000:8000"
     networks:
       - radio-net
-    env_file:
-      - /opt/icecast/.env
 
 networks:
   radio-net:
