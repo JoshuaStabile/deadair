@@ -24,6 +24,6 @@ COPY dependencies.txt /app/
 
 RUN pip install --no-cache-dir -r dependencies.txt
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app/code
 
-CMD ["python", "-m", "main.py"]
+CMD ["python", "-m", "main"]
