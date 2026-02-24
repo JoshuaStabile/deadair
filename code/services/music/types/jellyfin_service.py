@@ -14,9 +14,9 @@ class JellyfinService(MusicService):
         logger.debug("JellyfinService initialized.")
 
     def get_random_song(self):
-        logger.debug("Fetching random track from Jellyfin database.")
+        logger.debug(f"Entering LLMService 'get_random_song'")
 
-        rows = self.db.execute(GET_RANDOM_TRACK)
+        rows = self.db.fetch(GET_RANDOM_TRACK)
 
         if not rows:
             logger.warning("No tracks returned from database.")
@@ -32,4 +32,5 @@ class JellyfinService(MusicService):
         )
 
         logger.info(f"Selected track: {song.title} - {song.artist}")
+        logger.debug(f"Exiting LLMService 'get_random_song'")
         return song

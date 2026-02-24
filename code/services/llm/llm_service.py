@@ -8,8 +8,7 @@ logger = Logger().get()
 class LLMService:
 
     def generate(self, prompt: str) -> str:
-        logger.debug(f"Sending prompt to LLM (model={OLLAMA_MODEL})")
-        logger.debug(f"Prompt preview: {prompt[:200]}")
+        logger.debug(f"Entering LLMService 'generate'")
 
         try:
             response = requests.post(
@@ -26,6 +25,8 @@ class LLMService:
             data = response.json()
 
             logger.debug("LLM response received successfully.")
+            logger.debug("LLM response: " + data.get("response", ""))
+            logger.debug(f"Exiting LLMService 'generate'")
             return data.get("response", "")
 
         except Exception as e:

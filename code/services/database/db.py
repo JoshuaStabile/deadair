@@ -22,3 +22,8 @@ class Database(ABC):
     def execute(self, query: str, params: Iterable[Any] = ()) -> None:
         """Execute a write query (INSERT/UPDATE/DELETE)."""
         pass
+
+    @abstractmethod
+    def fetch(self, query: str, params: Iterable[Any] = ()) -> None:
+        """Execute a fetch query (SELECT)."""
+        pass
