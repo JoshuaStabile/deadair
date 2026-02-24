@@ -12,7 +12,7 @@ class LLMService:
 
         try:
             response = requests.post(
-                OLLAMA_URL,
+                f"{OLLAMA_URL}/api/generate",
                 json={
                     "model": OLLAMA_MODEL,
                     "prompt": prompt,
