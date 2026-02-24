@@ -8,6 +8,7 @@ class StreamService:
 
     def stream(self, tts_file: str, track_path: str):
         logger.debug("Entering StreamService 'stream'")
+        
         cmd = [
             "ffmpeg",
             "-re",

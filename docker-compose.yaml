@@ -11,6 +11,7 @@ services:
     volumes:
       - /opt/deadair/:/app
       - /opt/jellyfin/config/data:/jellyfin:ro
+      - /mnt/media/music:/media/music
     environment:
       - PYTHONPATH=/app/code
       - JELLYFIN_DB_PATH=/jellyfin/jellyfin.db
