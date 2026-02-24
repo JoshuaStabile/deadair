@@ -1,7 +1,7 @@
 GET_RANDOM_TRACK = """
     SELECT Name, Album, Artists, Path
-    FROM TypedBaseItems
-    WHERE Type = 'Audio'
+    FROM BaseItems
+    WHERE UnratedType = 'Music'
     AND Path IS NOT NULL
     ORDER BY RANDOM()
     LIMIT 1;
