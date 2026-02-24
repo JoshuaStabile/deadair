@@ -23,7 +23,7 @@ def main():
         "piper",
         "--model", PIPER_MODEL_PATH,
         "--text", "Hello world",
-        "--out", PIPER_OUTPUT_FILE
+        "--output_file", PIPER_OUTPUT_FILE
     ])
     
     if not JELLYFIN_DB_PATH:
