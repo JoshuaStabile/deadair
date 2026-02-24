@@ -1,9 +1,13 @@
 import subprocess
 from config import ICECAST_URL
+from logger.logger import Logger
+
+logger = Logger().get()
 
 class StreamService:
 
     def stream(self, tts_file: str, track_path: str):
+        logger.debug("Entering StreamService 'stream'")
         cmd = [
             "ffmpeg",
             "-re",
@@ -18,3 +22,4 @@ class StreamService:
         ]
 
         subprocess.run(cmd)
+        logger.debug("Exiting StreamService 'stream'")
