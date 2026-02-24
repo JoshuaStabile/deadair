@@ -12,10 +12,10 @@ services:
       - /opt/deadair/:/app
       - /opt/jellyfin/config/data:/jellyfin:ro
       - /mnt/media/music:/media/music
-    env_file:
-      - /opt/deadair/.env
     networks:
       - radio-net
+    env_file: 
+      - .env
 
   ollama:
     image: ollama/ollama:latest
@@ -33,12 +33,12 @@ services:
     container_name: icecast
     restart: unless-stopped
     volumes: 
-      - /opt/icecast/icecast.xml:/etc/icecast.xml
+      - /opt/icecast/icecast.xml:/etc/icecast.xml:ro
     ports:
       - "8000:8000"
     networks:
       - radio-net
-
+    
 networks:
   radio-net:
 
