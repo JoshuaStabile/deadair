@@ -36,6 +36,8 @@ services:
     image: deepcomp/icecast2
     container_name: icecast
     restart: unless-stopped
+    volumes: 
+      - /opt/icecast/icecast.xml:/etc/icecast.xml
     ports:
       - "8000:8000"
     networks:
