@@ -1,8 +1,9 @@
 FROM python:3.11-slim
 
+WORKDIR /app
+
 ENV DEBIAN_FRONTEND=noninteractive
 
-# System deps
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         git \
@@ -19,10 +20,10 @@ RUN curl -L https://github.com/rhasspy/piper/releases/latest/download/piper_linu
     && chmod +x /usr/local/bin/piper_phonemize \
     && rm /tmp/piper.tar.gz
 
-RUN pip install --no-cache-dir -r /app/dependencies.txt
+COPY dependencies.txt /app/
 
-# Set working directory
-WORKDIR /app/code
+RUN pip install --no-cache-dir -r dependencies.txt
 
-# Run main.py and keep container alive
+ENV PYTHONPATH=/app
+
 CMD ["python", "-m", "main.py"]
