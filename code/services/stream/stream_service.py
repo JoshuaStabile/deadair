@@ -1,5 +1,6 @@
 import subprocess
 import threading
+from queue import Queue
 from config import ICECAST_URL
 from logger.logger import Logger
 
@@ -9,26 +10,41 @@ logger = Logger().get()
 class StreamService:
 
     def __init__(self):
-        self.process = None
         self.lock = threading.Lock()
+        self.audio_queue = Queue()
+
+        self.running = True
+
         self._start_encoder()
 
-    # -------------------------
-    # Start persistent encoder
-    # -------------------------
+        # Start consumer thread
+        threading.Thread(
+            target=self._audio_consumer,
+            daemon=True
+        ).start()
+
+    # ------------------------------------------------
+    # Persistent Encoder
+    # ------------------------------------------------
     def _start_encoder(self):
         logger.info("Starting persistent FFmpeg encoder...")
 
         cmd = [
             "ffmpeg",
+
             "-re",
+
             "-f", "s16le",
             "-ar", "44100",
             "-ac", "2",
+
             "-i", "pipe:0",
-            "-c:a", "libmp3lame",
-            "-b:a", "320k",
-            "-f", "mp3",
+
+            "-c:a", "libopus",
+            "-b:a", "96k",
+
+            "-f", "ogg",
+
             ICECAST_URL
         ]
 
@@ -38,12 +54,10 @@ class StreamService:
             bufsize=0
         )
 
-    # ------------------------------------
-    # Public function: stream file to icecast
-    # ------------------------------------
-    def stream_file(self, path: str):
-        logger.info(f"Streaming file: {path}")
-
+    # ------------------------------------------------
+    # Public API
+    # ------------------------------------------------
+    def stream_file(self, path):
         decode_cmd = [
             "ffmpeg",
             "-i", path,
@@ -59,22 +73,28 @@ class StreamService:
             stderr=subprocess.DEVNULL
         ) as decoder:
 
-            while True:
-                chunk = decoder.stdout.read(4096)
+            while chunk := decoder.stdout.read(4096):
+                self.stream_pcm(chunk)
+    
+    def stream_pcm(self, pcm_bytes: bytes):
+        self.audio_queue.put(pcm_bytes)
 
-                if not chunk:
-                    break
+    # ------------------------------------------------
+    # Consumer thread
+    # ------------------------------------------------
+    def _audio_consumer(self):
+        logger.info("Audio consumer started")
 
-                self._write_pcm(chunk)
+        while self.running:
+            pcm = self.audio_queue.get()
 
-    # -------------------------
-    # Internal write to encoder
-    # -------------------------
-    def _write_pcm(self, pcm_bytes: bytes):
-        try:
-            with self.lock:
-                self.process.stdin.write(pcm_bytes)
-                self.process.stdin.flush()
-        except BrokenPipeError:
-            logger.warning("Encoder died. Restarting...")
-            self._start_encoder()
+            try:
+                with self.lock:
+                    self.process.stdin.write(pcm)
+                    self.process.stdin.flush()
+
+            except BrokenPipeError:
+                logger.warning("Encoder died. Restarting...")
+                self._start_encoder()
+
+            self.audio_queue.task_done()
