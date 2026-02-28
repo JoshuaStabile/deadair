@@ -7,7 +7,7 @@ ICECAST_URL = os.getenv("ICECAST_URL")
 
 PIPER_OUTPUT_FILE = os.getenv("PIPER_OUTPUT_FILE", "/app/output/output.wav")
 
-RADIO_QUEUE_SIZE = os.getenv("RADIO_QUEUE_SIZE", 5)
+RADIO_MIN_DURATION = os.getenv("RADIO_MIN_DURATION", 60)
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG")
 LOG_DIR = os.getenv("LOG_DIR", "logs")

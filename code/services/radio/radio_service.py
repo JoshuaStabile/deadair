@@ -2,7 +2,7 @@ import threading
 
 import time
 
-from config import RADIO_QUEUE_SIZE
+from config import RADIO_MIN_DURATION
 
 from logger.logger import Logger
 
@@ -41,7 +41,7 @@ class RadioService:
 
         while self.running:
             # keep playlist filled
-            if self._get_total_scheduled_time() > 60:
+            if self._get_total_scheduled_time() > RADIO_MIN_DURATION:
                 time.sleep(2)
                 continue
 
