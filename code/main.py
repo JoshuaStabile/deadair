@@ -27,7 +27,7 @@ def main():
     db = SQLiteDatabase(JELLYFIN_DB_PATH, mode=ConnectionMode.THREAD_LOCAL)
     
     music_service = JellyfinService(db)
-    playlist = Playlist(music_service)
+    playlist = Playlist(music_service, 2)
     
     llm_service = LLMService()
     tts_service = TTSService()
