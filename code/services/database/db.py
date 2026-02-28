@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Any, Iterable
+from enum import Enum
 
+class ConnectionMode(Enum):
+    SINGLE = "single"
+    THREAD_LOCAL = "thread_local"
 
 class Database(ABC):
     """

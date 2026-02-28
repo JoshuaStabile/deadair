@@ -1,4 +1,4 @@
-from services.database import ConnectionMode
+from services.database.db import ConnectionMode
 from services.database.types.sqlite3_db import SQLiteDatabase
 from services.music.types.jellyfin_service import JellyfinService
 from services.llm.llm_service import LLMService
