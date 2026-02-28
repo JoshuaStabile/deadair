@@ -1,5 +1,5 @@
 import random
-from dj import DJ
+from services.dj.dj import DJ
 
 class DJService:
 
