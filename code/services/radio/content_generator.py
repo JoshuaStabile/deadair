@@ -12,7 +12,7 @@ class ContentGenerator:
         self.tts = tts
         self.dj_service = dj_service
 
-    def get_wav_duration(file_path):
+    def get_wav_duration(self, file_path):
         with wave.open(file_path, "rb") as f:
             frames = f.getnframes()
             rate = f.getframerate()
