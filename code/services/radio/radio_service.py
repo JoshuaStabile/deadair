@@ -35,6 +35,9 @@ class RadioService:
             target=self._consumer_loop,
             daemon=True
         ).start()
+        
+        while (True):
+            time.sleep(1)
 
     def _producer_loop(self):
         logger.info("Producer loop started")
