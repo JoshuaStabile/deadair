@@ -1,4 +1,4 @@
-import soundfile as sf
+import wave
 
 from models.track.segment import Segment
 from logger.logger import Logger
@@ -12,10 +12,11 @@ class ContentGenerator:
         self.tts = tts
         self.dj_service = dj_service
 
-    def get_duration_soundfile(self, file_path):
-        f = sf.SoundFile(file_path)
-        duration = f.frames / f.samplerate
-        return duration
+    def get_wav_duration(file_path):
+        with wave.open(file_path, "rb") as f:
+            frames = f.getnframes()
+            rate = f.getframerate()
+            return frames / float(rate)
 
     def generate_dj_song_intro(self, song):
         logger.debug("Entering ContentGenerator generate_dj_song_intro")
@@ -33,7 +34,7 @@ class ContentGenerator:
         segment = Segment(
             song.title + " - intro",
             tts_file,
-            self.get_duration_soundfile(tts_file),
+            self.get_wav_duration(tts_file),
             text
         )
 
@@ -56,7 +57,7 @@ class ContentGenerator:
         segment = Segment(
             "dj segment",
             tts_file,
-            self.get_duration_soundfile(tts_file),
+            self.get_wav_duration(tts_file),
             text
         )
 
