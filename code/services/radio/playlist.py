@@ -23,4 +23,4 @@ class Playlist:
 
     def get_total_duration(self):
         with self._lock:
-            return sum(t.duration for t in self._tracks)
+            return max(0.0, sum(t.duration for t in self._tracks))

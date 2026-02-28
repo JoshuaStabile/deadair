@@ -28,7 +28,7 @@ class JellyfinService(MusicService):
             title=row["Name"],
             album=row["Album"],
             artist=row["Artists"],
-            duration=self.get_duration_seconds(row["RunTimeTicks"]),
+            duration=self.ticks_to_seconds(row["RunTimeTicks"]),
             path=row["Path"]
         )
 
@@ -36,5 +36,5 @@ class JellyfinService(MusicService):
         logger.debug(f"Exiting JellyfinService 'get_random_song'")
         return song
 
-    def get_duration_seconds(self, ticks):
-        return ticks / 10_000_000
+    def ticks_to_seconds(self, ticks: int) -> float:
+        return max(0.0, ticks / 10_000_000)

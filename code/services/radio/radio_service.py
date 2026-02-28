@@ -76,13 +76,12 @@ class RadioService:
             if (track.type == "song"):
                 logger.info(f"Now playing song: {track.title} - {track.artist}")
             
-            self.playlist.play(track)
             self.streamer.stream_file(track.path)
             
             self.current_track = None
             self.track_start_time = None
 
-    def _get_current_track_remaining(self) -> int:
+    def _get_current_track_remaining(self) -> float:
         if not self.current_track or not self.track_start_time:
             return 0.0
 
@@ -91,11 +90,9 @@ class RadioService:
 
         return max(0.0, remaining)
 
-    def _get_total_scheduled_time(self) -> int:
-        return (
-            self._get_current_track_remaining()
-            + self.playlist.get_total_duration()
-        )
+    def _get_total_scheduled_time(self) -> float:
+        return max(0.0, self._get_current_track_remaining() + self.playlist.get_total_duration())
+        
 
     # ---------------------------------------------------------
     # Track Queueing

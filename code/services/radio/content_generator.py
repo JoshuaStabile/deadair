@@ -12,11 +12,11 @@ class ContentGenerator:
         self.tts = tts
         self.dj_service = dj_service
 
-    def get_wav_duration(self, file_path):
+    def get_wav_duration(self, file_path) -> float:
         with wave.open(file_path, "rb") as f:
             frames = f.getnframes()
             rate = f.getframerate()
-            return frames / float(rate)
+            return max(0.0, frames / float(rate))
 
     def generate_dj_song_intro(self, song):
         logger.debug("Entering ContentGenerator generate_dj_song_intro")
