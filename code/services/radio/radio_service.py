@@ -49,10 +49,10 @@ class RadioService:
             logger.info(f"Now playing: {song.title} - {song.artist}")
 
             prompt = f"""
-            You are a radio DJ.
-            Introduce this track in 1-2 sentences.
+                You are a radio DJ.
+                Introduce this track in 1-2 sentences.
 
-            {song.stringify()}
+                {song.stringify()}
             """
 
             try:
