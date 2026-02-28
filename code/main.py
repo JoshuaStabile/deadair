@@ -32,7 +32,7 @@ def main():
     llm_service = LLMService()
     tts_service = TTSService()
     dj_service = DJService([
-        ArcticDJ
+        ArcticDJ()
     ])
     
     content_generator = ContentGenerator(llm_service, tts_service, dj_service)
