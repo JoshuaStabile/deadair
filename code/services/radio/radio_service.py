@@ -78,7 +78,7 @@ class RadioService:
         while self.running:
             try:
                 # Safe queue retrieval
-                song = self.queue.get(timeout=5)
+                song = self.queue.get()
 
                 self.current_song = song
                 self.song_start_time = time.monotonic()
