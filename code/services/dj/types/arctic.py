@@ -1,4 +1,6 @@
-class ArcticDJ:
+from ..dj import DJ
+
+class ArcticDJ(DJ):
     def __init__(self):
         super().__init__(
             name="Arctic",
