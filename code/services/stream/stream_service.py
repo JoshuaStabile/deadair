@@ -43,6 +43,8 @@ class StreamService:
             "-c:a", "libopus",
             "-b:a", "96k",
 
+            "-content_type", "application/ogg"
+
             "-f", "ogg",
 
             ICECAST_URL
@@ -58,8 +60,10 @@ class StreamService:
     # Public API
     # ------------------------------------------------
     def stream_file(self, path):
+
         decode_cmd = [
             "ffmpeg",
+            "-re",
             "-i", path,
             "-f", "s16le",
             "-ar", "44100",
@@ -67,14 +71,16 @@ class StreamService:
             "pipe:1"
         ]
 
-        with subprocess.Popen(
+        decoder = subprocess.Popen(
             decode_cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL
-        ) as decoder:
+        )
 
-            while chunk := decoder.stdout.read(4096):
-                self.stream_pcm(chunk)
+        while self.running and (chunk := decoder.stdout.read(4096)):
+            self.stream_pcm(chunk)
+
+        decoder.terminate()
     
     def stream_pcm(self, pcm_bytes: bytes):
         self.audio_queue.put(pcm_bytes)
@@ -86,15 +92,20 @@ class StreamService:
         logger.info("Audio consumer started")
 
         while self.running:
-            pcm = self.audio_queue.get()
-
             try:
-                with self.lock:
+                pcm = self.audio_queue.get(timeout=5)
+
+                if pcm is None:
+                    continue
+
+                # Write continuously without locking too long
+                try:
                     self.process.stdin.write(pcm)
                     self.process.stdin.flush()
 
-            except BrokenPipeError:
-                logger.warning("Encoder died. Restarting...")
-                self._start_encoder()
+                except BrokenPipeError:
+                    logger.warning("Encoder died. Restarting...")
+                    self._start_encoder()
 
-            self.audio_queue.task_done()
+            except Exception as e:
+                logger.error(f"Audio consumer error: {e}")

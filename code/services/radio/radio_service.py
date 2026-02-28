@@ -150,7 +150,10 @@ class RadioService:
         with self.generation_lock:
             logger.info("Pre-generating next radio content")
 
-            song = self.music.get_random_song()
+            try:
+                song = self.queue.queue[0]
+            except IndexError:
+                return None
 
             if not song:
                 return None
