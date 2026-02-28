@@ -5,8 +5,7 @@ OLLAMA_URL = os.getenv("OLLAMA_URL")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "tinyllama")
 ICECAST_URL = os.getenv("ICECAST_URL")
 
-PIPER_MODEL_PATH = "/app/resources/piper/arctic/en_US-arctic-medium.onnx"
-PIPER_OUTPUT_FILE = "/app/output/output.wav"
+PIPER_OUTPUT_FILE = os.getenv("PIPER_OUTPUT_FILE", "/app/output/output.wav")
 
 RADIO_QUEUE_SIZE = os.getenv("RADIO_QUEUE_SIZE", 5)
 
