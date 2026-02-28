@@ -13,8 +13,8 @@ class ContentGenerator:
         text = self.llm.generate(prompt)
 
         tts_file = self.tts.synthesize(
-            text,
-            voice_model=dj.voice_model_path
+            model=dj.voice_model_path,
+            text=text,
         )
 
         return tts_file
@@ -27,8 +27,8 @@ class ContentGenerator:
         text = self.llm.generate(prompt)
 
         tts_file = self.tts.synthesize(
-            text,
-            voice_model=dj.voice_model_path
+            model=dj.voice_model_path,
+            text=text,
         )
 
         return tts_file

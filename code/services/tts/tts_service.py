@@ -1,18 +1,18 @@
 import subprocess
-from config import PIPER_MODEL_PATH, PIPER_OUTPUT_FILE
+from config import PIPER_OUTPUT_FILE
 from logger.logger import Logger
 
 logger = Logger().get()
 
 class TTSService:
 
-    def synthesize(self, text: str) -> str:
+    def synthesize(self, model: str, text: str) -> str:
         logger.debug("Entering TTSService 'synthesize'")
         
         process = subprocess.Popen(
             [
                 "piper",
-                "--model", PIPER_MODEL_PATH,
+                "--model", model,
                 "--output_file", PIPER_OUTPUT_FILE
             ],
             stdin=subprocess.PIPE,
