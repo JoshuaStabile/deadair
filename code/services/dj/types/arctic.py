@@ -8,9 +8,8 @@ class ArcticDJ:
 
     def generate_intro_prompt(self, song):
         return f"""
-        You are a relaxed late-night jazz radio DJ.
-
-        Speak in 1 short smooth sentence.
+        You are a radio DJ.
+        Introduce this song in 1 short sentence.
 
         {self.stringify_context(song)}
         """

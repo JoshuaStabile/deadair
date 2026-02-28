@@ -14,7 +14,7 @@ class DJ(ABC):
     def stringify_context(self, song) -> str:
         return f"""
         DJ Name: {self.name}
-        Personality: {self.personality}
+        DJ Personality: {self.personality}
 
         Song Info:
         {song.stringify()}

@@ -39,7 +39,7 @@ class RadioService:
     # ---------------------------------------------------------
 
     def _play_song(self, song):
-
+        logger.debug(f"Entering RadioService _play_song")
         self.playlist.current_song = song
         self.song_start_time = time.monotonic()
 
@@ -55,13 +55,14 @@ class RadioService:
         logger.info(f"Now playing: {song.title}")
         # Start lookahead watcher
         self._wait_for_lookahead(song)
+        logger.debug(f"Exiting RadioService _play_song")
 
     # ---------------------------------------------------------
     # Lookahead Generation
     # ---------------------------------------------------------
 
     def _wait_for_lookahead(self, song):
-
+        logger.debug(f"Entering RadioService _wait_for_lookahead")
         duration = song.get_duration_seconds()
 
         generation_started = False
@@ -84,6 +85,7 @@ class RadioService:
                 break
 
             time.sleep(1)
+        logger.debug(f"Exiting RadioService _wait_for_lookahead")
 
     # ---------------------------------------------------------
     # Background Prefetch
@@ -91,6 +93,8 @@ class RadioService:
 
     def _prefetch_next_content(self):
         """Pre-warm next DJ content while current song finishes."""
+        logger.debug(f"Entering RadioService _prefetch_next_content")
+        
         with self.generation_lock:
             try:
                 next_song = self.playlist.peek_next()
@@ -101,3 +105,4 @@ class RadioService:
 
             except Exception as e:
                 logger.error(f"Prefetch failed: {e}")
+        logger.debug(f"Exiting RadioService _prefetch_next_content")
