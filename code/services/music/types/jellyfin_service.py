@@ -1,6 +1,6 @@
 from ..music_service import MusicService
 from services.database.db import Database
-from models.song import Song
+from models.track.song import Song
 from queries.jellyfin_queries import GET_RANDOM_TRACK
 from logger.logger import Logger
 
