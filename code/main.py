@@ -35,7 +35,7 @@ def main():
         ArcticDJ
     ])
     
-    content_generator = ContentGenerator(dj_service, llm_service, tts_service)
+    content_generator = ContentGenerator(llm_service, tts_service, dj_service)
     
     streamer = StreamService()
 
