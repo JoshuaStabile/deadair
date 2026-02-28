@@ -18,6 +18,9 @@ class RadioService:
         self.running = True
         
         self.song_start_time = None
+        
+        # Concurrency safety 
+        self.generation_lock = threading.Lock()
 
         logger.debug("RadioService initialized.")
 
@@ -29,6 +32,7 @@ class RadioService:
             
             song = self.playlist.next_song()
             if not song:
+                logger.debug("No next song found...")
                 time.sleep(2)
                 continue
 
