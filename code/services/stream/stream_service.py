@@ -109,4 +109,4 @@ class StreamService:
                     self._start_encoder()
 
             except Exception as e:
-                # logger.error(f"Audio consumer error: {e}")
+                logger.error(f"Audio consumer error: {e}")
