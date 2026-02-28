@@ -91,7 +91,11 @@ class RadioService:
         return max(0.0, remaining)
 
     def _get_total_scheduled_time(self) -> float:
-        return max(0.0, self._get_current_track_remaining() + self.playlist.get_total_duration())
+        return max(
+            0.0,
+            float(self._get_current_track_remaining()) +
+            float(self.playlist.get_total_duration() or 0)
+        )
         
 
     # ---------------------------------------------------------
