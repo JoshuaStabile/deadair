@@ -20,6 +20,7 @@ class Playlist:
                 return
 
             logger.info(f"Buffered: {song.title}")
+            self.queue_song(song)
 
     def queue_song(self, song):
         self.queue.put(song)
