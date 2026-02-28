@@ -60,7 +60,7 @@ class StreamService:
     # Public API
     # ------------------------------------------------
     def stream_file(self, path):
-
+        logger.debug("Entering StreamService stream_file")
         decode_cmd = [
             "ffmpeg",
             "-re",
@@ -81,6 +81,7 @@ class StreamService:
             self.stream_pcm(chunk)
 
         decoder.terminate()
+        logger.debug("Exiting StreamService stream_file")
     
     def stream_pcm(self, pcm_bytes: bytes):
         self.audio_queue.put(pcm_bytes)
