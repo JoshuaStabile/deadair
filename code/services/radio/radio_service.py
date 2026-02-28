@@ -43,23 +43,31 @@ class RadioService:
     # ---------------------------------------------------------
 
     def _play_song(self, song):
-        logger.debug(f"Entering RadioService _play_song")
-        self.playlist.current_song = song
+        logger.debug("Entering RadioService _play_song")
+
         self.song_start_time = time.monotonic()
 
-        # Generate DJ intro
         intro_file = self.content_generator.generate_dj_song_intro(song)
 
         if intro_file:
             self.streamer.stream_file(intro_file)
 
-        # Stream music
-        self.streamer.stream_file(song.path)
+        # Start song streaming in background
+        stream_thread = threading.Thread(
+            target=self.streamer.stream_file,
+            args=(song.path,),
+        )
+        stream_thread.start()
 
         logger.info(f"Now playing: {song.title}")
-        # Start lookahead watcher
+
+        # Monitor while song is playing
         self._wait_for_lookahead(song)
-        logger.debug(f"Exiting RadioService _play_song")
+
+        # Wait for stream to finish before continuing
+        stream_thread.join()
+
+        logger.debug("Exiting RadioService _play_song")
 
     # ---------------------------------------------------------
     # Lookahead Generation
