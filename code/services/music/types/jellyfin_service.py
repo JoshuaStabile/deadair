@@ -28,10 +28,13 @@ class JellyfinService(MusicService):
             title=row["Name"],
             album=row["Album"],
             artist=row["Artists"],
-            ticks=row["RunTimeTicks"],
+            seconds=self.get_duration_seconds(row["RunTimeTicks"]),
             path=row["Path"]
         )
 
         logger.info(f"Selected track: {song.title} - {song.artist}")
         logger.debug(f"Exiting JellyfinService 'get_random_song'")
         return song
+
+    def get_duration_seconds(self, ticks):
+        return ticks / 10_000_000

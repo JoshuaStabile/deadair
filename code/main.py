@@ -21,25 +21,23 @@ logger = Logger().get()
 def main():
     logger.info("Application starting")
     
-    if not JELLYFIN_DB_PATH:
-        raise RuntimeError("JELLYFIN_DB_PATH not set")
-    
-    db = SQLiteDatabase(JELLYFIN_DB_PATH, mode=ConnectionMode.THREAD_LOCAL)
-    
-    music_service = JellyfinService(db)
-    playlist = Playlist(music_service, 2)
-    
     llm_service = LLMService()
     tts_service = TTSService()
     dj_service = DJService([
         ArcticDJ()
     ])
     
-    content_generator = ContentGenerator(llm_service, tts_service, dj_service)
+    if not JELLYFIN_DB_PATH:
+        raise RuntimeError("JELLYFIN_DB_PATH not set")
     
+    music_db = SQLiteDatabase(JELLYFIN_DB_PATH, mode=ConnectionMode.THREAD_LOCAL)
+    
+    music_service = JellyfinService(music_db)
+    content_generator = ContentGenerator(llm_service, tts_service, dj_service)
+    playlist = Playlist(2)
     streamer = StreamService()
 
-    radio = RadioService(playlist, content_generator, streamer)
+    radio = RadioService(music_service, playlist, content_generator, streamer)
     radio.run()
     logger.info("Exiting main")
 

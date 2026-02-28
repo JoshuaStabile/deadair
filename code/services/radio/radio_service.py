@@ -10,111 +10,97 @@ logger = Logger().get()
 
 class RadioService:
 
-    def __init__(self, playlist, content_generator, streamer):
+    def __init__(self, music, playlist, content_generator, streamer):
+        self.music = music
         self.playlist = playlist
         self.content_generator = content_generator
         self.streamer = streamer
 
         self.running = True
         
-        self.song_start_time = None
-        
-        # Concurrency safety 
-        self.generation_lock = threading.Lock()
+        self.current_track = None
+        self.track_start_time = None
 
         logger.debug("RadioService initialized.")
 
     def run(self):
         logger.info("RadioService started.")
+        
+        threading.Thread(
+            target=self._producer_loop,
+            daemon=True
+        ).start()
+        
+        threading.Thread(
+            target=self._consumer_loop,
+            daemon=True
+        ).start()
 
-        while (self.running):
-            self.playlist.fill_if_needed()
-            
-            song = self.playlist.next_song()
-            if not song:
-                logger.debug("No next song found...")
+    def _producer_loop(self):
+        logger.info("Producer loop started")
+
+        while self.running:
+            # keep playlist filled
+            if self._get_total_scheduled_time() > 60:
                 time.sleep(2)
                 continue
 
-            self._play_song(song)
-            
-    # ---------------------------------------------------------
-    # Song Playback
-    # ---------------------------------------------------------
+            self._enqueue_random_song_and_intro()
 
-    def _play_song(self, song):
-        logger.debug("Entering RadioService _play_song")
+            next_track = self.playlist.peek_next()
+            if (next_track.type == "segment"):
+                logger.info(f"Queued segment: {next_track.title}")
 
-        self.song_start_time = time.monotonic()
+            if (next_track.type == "song"):
+                logger.info(f"Queued song: {next_track.title} - {next_track.artist}")
 
-        intro_file = self.content_generator.generate_dj_song_intro(song)
-
-        if intro_file:
-            self.streamer.stream_file(intro_file)
-
-        # Start song streaming in background
-        stream_thread = threading.Thread(
-            target=self.streamer.stream_file,
-            args=(song.path,),
-        )
-        stream_thread.start()
-
-        logger.info(f"Now playing: {song.title}")
-
-        # Monitor while song is playing
-        self._wait_for_lookahead(song)
-
-        # Wait for stream to finish before continuing
-        stream_thread.join()
-
-        logger.debug("Exiting RadioService _play_song")
-
-    # ---------------------------------------------------------
-    # Lookahead Generation
-    # ---------------------------------------------------------
-
-    def _wait_for_lookahead(self, song):
-        logger.debug(f"Entering RadioService _wait_for_lookahead")
-        duration = song.get_duration_seconds()
-
-        generation_started = False
-
+    def _consumer_loop(self):
+        logger.info("Consumer loop started")
+        
         while self.running:
 
-            elapsed = time.monotonic() - self.song_start_time
-            remaining = duration - elapsed
+            track = self.playlist.next_track()
+            self.current_track = track
+            self.track_start_time = time.monotonic()
 
-            if remaining <= 60 and not generation_started:
-                generation_started = True
+            if not track:
+                time.sleep(1)
+                continue
+            
+            if (track.type == "segment"):
+                logger.info(f"Now playing segment: {track.title}")
 
-                # Generate next DJ segment in background
-                threading.Thread(
-                    target=self._prefetch_next_content,
-                    daemon=True
-                ).start()
+            if (track.type == "song"):
+                logger.info(f"Now playing song: {track.title} - {track.artist}")
+            
+            self.playlist.play(track)
+            self.streamer.stream_file(track.path)
+            
+            self.current_track = None
+            self.track_start_time = None
 
-            if remaining <= 0:
-                break
+    def _get_current_track_remaining(self) -> int:
+        if not self.current_track or not self.track_start_time:
+            return 0.0
 
-            time.sleep(1)
-        logger.debug(f"Exiting RadioService _wait_for_lookahead")
+        elapsed = time.monotonic() - self.track_start_time
+        remaining = self.current_track.duration - elapsed
+
+        return max(0.0, remaining)
+
+    def _get_total_scheduled_time(self) -> int:
+        return (
+            self._get_current_track_remaining()
+            + self.playlist.get_total_duration()
+        )
 
     # ---------------------------------------------------------
-    # Background Prefetch
+    # Track Queueing
     # ---------------------------------------------------------
 
-    def _prefetch_next_content(self):
-        """Pre-warm next DJ content while current song finishes."""
-        logger.debug(f"Entering RadioService _prefetch_next_content")
-        
-        with self.generation_lock:
-            try:
-                next_song = self.playlist.peek_next()
+    def _enqueue_random_song_and_intro(self):
+        song = self.music.get_random_song()
+        intro_segment = self.content_generator.generate_dj_song_intro(song)
 
-                if next_song:
-                    logger.info("Pre-generating next DJ content")
-                    self.content_generator.generate_dj_segment(next_song)
-
-            except Exception as e:
-                logger.error(f"Prefetch failed: {e}")
-        logger.debug(f"Exiting RadioService _prefetch_next_content")
+        self.playlist.enqueue_track(intro_segment)
+        self.playlist.enqueue_track(song)
