@@ -14,7 +14,7 @@ class JellyfinService(MusicService):
         logger.debug("JellyfinService initialized.")
 
     def get_random_song(self):
-        logger.debug(f"Entering LLMService 'get_random_song'")
+        logger.debug(f"Entering JellyfinService 'get_random_song'")
 
         rows = self.db.fetch(GET_RANDOM_TRACK)
 
@@ -28,9 +28,10 @@ class JellyfinService(MusicService):
             title=row["Name"],
             album=row["Album"],
             artist=row["Artists"],
+            ticks=row["RunTimeTicks"],
             path=row["Path"]
         )
 
         logger.info(f"Selected track: {song.title} - {song.artist}")
-        logger.debug(f"Exiting LLMService 'get_random_song'")
+        logger.debug(f"Exiting JellyfinService 'get_random_song'")
         return song

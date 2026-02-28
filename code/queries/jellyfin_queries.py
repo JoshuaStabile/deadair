@@ -1,5 +1,5 @@
 GET_RANDOM_TRACK = """
-    SELECT Name, Album, Artists, Path
+    SELECT Name, Album, Artists, RunTimeTicks, Path
     FROM BaseItems
     WHERE UnratedType = 'Music'
     AND Path IS NOT NULL

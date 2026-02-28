@@ -8,6 +8,8 @@ ICECAST_URL = os.getenv("ICECAST_URL")
 PIPER_MODEL_PATH = "/app/resources/piper/arctic/en_US-arctic-medium.onnx"
 PIPER_OUTPUT_FILE = "/app/output/output.wav"
 
+RADIO_QUEUE_SIZE = os.getenv("RADIO_QUEUE_SIZE", 5)
+
 LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG")
 LOG_DIR = os.getenv("LOG_DIR", "logs")
 LOG_FILE = os.getenv("LOG_FILE", "deadair.log")
