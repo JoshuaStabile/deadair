@@ -1,3 +1,4 @@
+from services.database import ConnectionMode
 from services.database.types.sqlite3_db import SQLiteDatabase
 from services.music.types.jellyfin_service import JellyfinService
 from services.llm.llm_service import LLMService
@@ -18,8 +19,7 @@ def main():
     if not JELLYFIN_DB_PATH:
         raise RuntimeError("JELLYFIN_DB_PATH not set")
     
-    db = SQLiteDatabase(JELLYFIN_DB_PATH)
-    db.connect()
+    db = SQLiteDatabase(JELLYFIN_DB_PATH, mode=ConnectionMode.THREAD_LOCAL)
     
     music = JellyfinService(db)
     llm = LLMService()
