@@ -21,6 +21,6 @@ class Playlist:
         with self._lock:
             return self._tracks[0] if self._tracks else None
 
-    def get_total_duration(self):
+    def get_total_duration(self) -> float:
         with self._lock:
             return max(0.0, sum(t.duration for t in self._tracks))

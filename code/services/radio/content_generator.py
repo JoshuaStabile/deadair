@@ -32,10 +32,10 @@ class ContentGenerator:
         )
         
         segment = Segment(
-            song.title + " - intro",
-            tts_file,
-            self.get_wav_duration(tts_file),
-            text
+            title=song.title + " - intro",
+            path=tts_file,
+            duration=self.get_wav_duration(tts_file),
+            text=text
         )
 
         logger.debug("Exiting ContentGenerator generate_dj_song_intro")
@@ -55,10 +55,10 @@ class ContentGenerator:
         )
         
         segment = Segment(
-            "dj segment",
-            tts_file,
-            self.get_wav_duration(tts_file),
-            text
+            title="dj segment",
+            path=tts_file,
+            duration=self.get_wav_duration(tts_file),
+            text=text
         )
 
         logger.debug("Exiting ContentGenerator generate_dj_segment")
