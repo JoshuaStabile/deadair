@@ -43,9 +43,9 @@ class StreamService:
             "-c:a", "libopus",
             "-b:a", "96k",
 
-            "-content_type", "application/ogg"
+            "-f", "opus",
 
-            "-f", "ogg",
+            "-content_type", "audio/ogg",
 
             ICECAST_URL
         ]
