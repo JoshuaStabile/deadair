@@ -1,7 +1,7 @@
 from .track import Track 
 
 class Song(Track):
-    def __init__(self, title, album, artist, duration, path):
+    def __init__(self, title: str, album: str, artist: str, duration: float, path: str):
         super().__init__(title, path, duration, "song")
         self.album = album
         self.artist = artist
