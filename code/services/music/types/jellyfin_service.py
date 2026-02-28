@@ -28,7 +28,7 @@ class JellyfinService(MusicService):
             title=row["Name"],
             album=row["Album"],
             artist=row["Artists"],
-            seconds=self.get_duration_seconds(row["RunTimeTicks"]),
+            duration=self.get_duration_seconds(row["RunTimeTicks"]),
             path=row["Path"]
         )
 
