@@ -34,7 +34,7 @@ def main():
     
     music_service = JellyfinService(music_db)
     content_generator = ContentGenerator(llm_service, tts_service, dj_service)
-    playlist = Playlist(2)
+    playlist = Playlist()
     streamer = StreamService()
 
     radio = RadioService(music_service, playlist, content_generator, streamer)
