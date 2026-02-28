@@ -4,8 +4,10 @@ class Song:
         self.album = album
         self.artist = artist
         self.ticks = ticks
-        self.seconds = ticks / 10_000_000
         self.path = path
+
+    def get_duration_seconds(self):
+        return self.ticks / 10_000_000
 
     def stringify(self) -> str:
         return (
